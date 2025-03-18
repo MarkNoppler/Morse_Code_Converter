@@ -9,7 +9,7 @@ Made by:
 Jacob Fairhurst
 """
 
-# Morse Code Dictionary as constant
+#Morse Code Dictionary as constant
 MORSE_CODE_DICT = {
     'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
     'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
