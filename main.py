@@ -44,11 +44,17 @@ class MorseCodeConverter:
 
     def to_morse(self):
         """
-        Converts stored text to Morse code.
+        Converts stored text to Morse code. Will check for invalid characters.
 
         :return: String converted to Morse code.
         """
-        return ' '.join(self.MORSE_CODE_DICT[char] for char in self.text if char in self.MORSE_CODE_DICT)
+        morse_code = []
+        for char in self.text:
+            if char in self.MORSE_CODE_DICT:
+                morse_code.append(self.MORSE_CODE_DICT[char])
+            else:
+                print(f"Warning: Character '{char}' cannot be converted to Morse code and will be ignored.")
+        return ' '.join(morse_code)
 
     def play_morse(self):
         """
@@ -67,6 +73,7 @@ class MorseCodeConverter:
             elif symbol == '/':
                 time.sleep(0.6)
             time.sleep(0.2)
+
 
 
 #runs programme and class
