@@ -9,38 +9,70 @@ Made by:
 Jacob Fairhurst
 """
 
-#Morse Code Dictionary as constant
-MORSE_CODE_DICT = {
-    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
-    'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
-    'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---',
-    'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
-    'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--',
-    'Z': '--..',
-    '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
-    '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
-    ' ': '/'
-}
+import time
+import winsound
+
+class MorseCodeConverter:
+    """
+    A class to convert text to Morse code and play the Morse code as sound.
+    """
+
+    #Morse code dictionary
+    MORSE_CODE_DICT = {
+        'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
+        'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+        'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---',
+        'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+        'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--',
+        'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--',
+        '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..',
+        '9': '----.', ' ': '/'
+    }
+
+    #time in milliseconds, frequency in Hz
+    DOT_DURATION = 200
+    DASH_DURATION = 600
+    FREQUENCY = 800
+
+    def __init__(self, text):
+        """
+        Initialises the MorseCodeConverter class with the text parameter. Accounts for capitalisation with upper method.
+
+        :param text: Text is to be converted to Morse code.
+        """
+        self.text = text.upper()
+
+    def to_morse(self):
+        """
+        Converts stored text to Morse code.
+
+        :return: String converted to Morse code.
+        """
+        return ' '.join(self.MORSE_CODE_DICT[char] for char in self.text if char in self.MORSE_CODE_DICT)
+
+    def play_morse(self):
+        """
+        Plays Morse code as a series of beeping sounds.
+
+        :return: Short beep per dot, longer beep on dashes and spaces are gaps.
+        """
+        morse_code = self.to_morse()
+        for symbol in morse_code:
+            if symbol == '.':
+                winsound.Beep(self.FREQUENCY, self.DOT_DURATION)
+            elif symbol == '-':
+                winsound.Beep(self.FREQUENCY, self.DASH_DURATION)
+            elif symbol == ' ':
+                time.sleep(0.2)
+            elif symbol == '/':
+                time.sleep(0.6)
+            time.sleep(0.2)
 
 
-def text_to_morse(text):
-    """Converts a string to morse code. Takes a text parameter. Converts input to uppercase
-    Appends input string values from main() to an empty string, then joins together as a
-    translation from the MORSE_CODE_DICT dictionary. Will only take letters or numbers."""
-    text = text.upper()
-    for char in text:
-        if char not in MORSE_CODE_DICT:
-            print("Please enter a valid letter or number.")
-            return main()
-        else:
-            morse_code = ' '.join(MORSE_CODE_DICT[char] for char in text if char in MORSE_CODE_DICT)
-            return morse_code
-
-def main():
-    """Function to call main script. Takes the input string value to convert to morse code."""
-    user_input = input("Write a message to convert to Morse Code: ")
-    print(f"Morse code reads: {text_to_morse(user_input)}")
-
-
-main()
+#runs programme and class
+if __name__ == "__main__":
+    user_input = input("Enter text to convert to Morse code: ")
+    converter = MorseCodeConverter(user_input)
+    print("Morse Code:", converter.to_morse())
+    converter.play_morse()
 
